@@ -41,7 +41,7 @@ pipeline {
 			steps {
 				script {
 					try{
-						def sonarqubeUrl = "https://sonarqube-cicd.apps.sharedocp311cns.lab.upshift.rdu2.redhat.com"
+						def sonarqubeUrl = "http://sonarqube-cicd.apps.sharedocp311cns.lab.upshift.rdu2.redhat.com"
 						sh "mvn sonar:sonar -Dsonar.host.url=${sonarqubeUrl} -DskipTests=true -Dsonar.scm.provider=git -f ${env.POM_FILE_PATH}"
 					} catch(Exception e) {
 						echo "Erro ao chamar o Sonar. - " + e.getMessage()
