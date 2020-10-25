@@ -1,0 +1,30 @@
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  annotations:
+    pipeline.alpha.openshift.io/uses: '[{"name": "jenkins", "namespace": "", "kind": "DeploymentConfig"}]'
+  labels:
+    name: pipeline
+  name: pipeline
+  namespace: cicd
+spec:
+  failedBuildsHistoryLimit: 5
+  nodeSelector: {}
+  output: {}
+  postCommit: {}
+  resources: {}
+  runPolicy: Serial
+  source:
+    git:
+      ref: v3.11
+      uri: 'https://github.com/jpmaida/openshift-pipelines.git'
+    type: Git
+  strategy:
+    jenkinsPipelineStrategy:
+      env:
+        - name: FOO_NAME
+          value: foo
+      jenkinsfilePath: jenkins-pipeline.groovy
+    type: JenkinsPipeline
+  successfulBuildsHistoryLimit: 5
+  triggers: []
