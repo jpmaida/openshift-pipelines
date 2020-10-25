@@ -52,7 +52,14 @@ pipeline {
 		stage('Deploy') {
 			steps {
 				script {
-					echo "Deployyyy"
+					openshift.withCluster(){
+						def openshiftNamespace = openshift.selector("namespace", env.PROJECT_NAME)
+						if(openshiftNamespace.exists()){
+							echo "Existe projeto"
+						} else {
+							echo "N Existe projeto"
+						}
+					}
 				}
 			}
 		}
