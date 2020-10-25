@@ -24,6 +24,12 @@ spec:
       env:
         - name: FOO_NAME
           value: foo
+        - name: APP_GIT_URL
+          value: "https://github.com/jpmaida/hello-world-spring-boot.git"
+        - name: APP_GIT_BRANCH
+          value: master
+        - name: POM_FILE_PATH
+          value: "example/pom.xml"
       jenkinsfilePath: jenkins-pipeline.groovy
     type: JenkinsPipeline
   successfulBuildsHistoryLimit: 5
