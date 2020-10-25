@@ -19,7 +19,7 @@ pipeline {
 			steps {
 				script {
 					echo "Clone GIT URL: ${env.APP_GIT_URL} da branch: ${env.APP_GIT_BRANCH}"
-					git branch: env.APP_GIT_URL, credentialsId: '', url: env.APP_GIT_BRANCH
+					git branch: env.APP_GIT_BRANCH, credentialsId: '', url: env.APP_GIT_URL
 					echo "Clone realizado com sucesso"
 
 					def pom = readMavenPom file: "${env.POM_FILE_PATH}"
