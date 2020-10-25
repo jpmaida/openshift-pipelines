@@ -30,6 +30,8 @@ spec:
           value: master
         - name: POM_FILE_PATH
           value: "example/pom.xml"
+        - name: PROJECT_NAME
+          value: "teste"
       jenkinsfilePath: jenkins-pipeline.groovy
     type: JenkinsPipeline
   successfulBuildsHistoryLimit: 5
