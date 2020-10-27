@@ -57,13 +57,14 @@ pipeline {
 							def pingPongDC = openshift.selector("dc/${env.APP_NAME}")
 							if(pingPongDC.exists()){
 								echo "Aplicação já existe."
-								openshift.apply('-f ocp/configmap.yaml')
+								openshift.apply('-f hello-world-spring-boot/ocp/configmap.yaml')
 								def bc = openshift.selector('bc/ping-pong')
 								bc.startBuild("--from-file=${env.APP_NAME}.jar", "--wait=true").logs('-f')
 								dc.rollout().status()
 							} else {
 								echo "Aplicação ainda não existe."
-								openshift.create('-f ocp/configmap.yaml')
+								openshift.create('-f hello-world-spring-boot/ocp/configmap.yaml')
+								openshift.raw("import-image redhat-openjdk-18/openjdk18-openshift --from=registry.redhat.io/redhat-openjdk-18/openjdk18-openshift --confirm")
 								openshift.newBuild("--name=${env.APP_NAME} --image-stream=openjdk18-openshift:latest -l app=${env.APP_NAME}", "--binary=true")
 								openshift.selector('bc/ping-pong').startBuild("--from-file=${env.APP_NAME}.jar", "--wait=true").logs('-f')
 								openshift.newApp("--name=${env.APP_NAME} --image-stream=${env.APP_NAME}:latest")
