@@ -31,7 +31,7 @@ spec:
         - name: POM_FILE_PATH
           value: "example/pom.xml"
         - name: PROJECT_NAME
-          value: "teste"
+          value: "olympic-games"
       jenkinsfilePath: jenkins-pipeline.groovy
     type: JenkinsPipeline
   successfulBuildsHistoryLimit: 5
