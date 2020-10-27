@@ -66,8 +66,8 @@ pipeline {
 								sh "pwd"
 								sh "ls"
 								openshift.create('-f ./ocp/configmap.yaml')
-								openshift.raw("import-image redhat-openjdk-18/openjdk18-openshift --from=registry.redhat.io/redhat-openjdk-18/openjdk18-openshift --confirm")
-								openshift.newBuild("--name=${env.APP_NAME} --image-stream=openjdk18-openshift:latest -l app=${env.APP_NAME}", "--binary=true")
+								//openshift.raw("import-image redhat-openjdk-18/openjdk18-openshift --from=registry.redhat.io/redhat-openjdk-18/openjdk18-openshift --confirm")
+								openshift.newBuild("--name=${env.APP_NAME} --image-stream=openshift/java:8 -l app=${env.APP_NAME}", "--binary=true")
 								openshift.selector('bc/ping-pong').startBuild("--from-file=${env.APP_NAME}.jar", "--wait=true").logs('-f')
 								openshift.newApp("--name=${env.APP_NAME} --image-stream=${env.APP_NAME}:latest")
 								openshift.set("env dc/${appName} MATCH_TIME_IN_MINUTES=10")
