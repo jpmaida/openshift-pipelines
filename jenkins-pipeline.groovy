@@ -65,7 +65,7 @@ pipeline {
 								echo "Aplicação ainda não existe."
 								sh "pwd"
 								sh "ls"
-								openshift.create('-f hello-world-spring-boot/ocp/configmap.yaml')
+								openshift.create('-f ./ocp/configmap.yaml')
 								openshift.raw("import-image redhat-openjdk-18/openjdk18-openshift --from=registry.redhat.io/redhat-openjdk-18/openjdk18-openshift --confirm")
 								openshift.newBuild("--name=${env.APP_NAME} --image-stream=openjdk18-openshift:latest -l app=${env.APP_NAME}", "--binary=true")
 								openshift.selector('bc/ping-pong').startBuild("--from-file=${env.APP_NAME}.jar", "--wait=true").logs('-f')
