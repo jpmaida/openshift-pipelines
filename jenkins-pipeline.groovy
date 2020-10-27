@@ -60,7 +60,7 @@ pipeline {
 								openshift.apply('-f ./ocp/configmap.yaml')
 								def bc = openshift.selector("bc/${env.APP_NAME}")
 								bc.startBuild("--from-file=example/target/${env.APP_NAME}.jar", "--wait=true").logs('-f')
-								dc.rollout().status()
+								openshift.selector("dc/${env.APP_NAME}").rollout().status()
 							} else {
 								echo "Aplicação ainda não existe."
 								openshift.create('-f ./ocp/configmap.yaml')
