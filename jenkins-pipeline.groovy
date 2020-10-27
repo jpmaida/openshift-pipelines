@@ -53,11 +53,13 @@ pipeline {
 			steps {
 				script {
 					openshift.withCluster(){
-						def openshiftNamespace = openshift.selector("namespace", env.PROJECT_NAME)
-						if(openshiftNamespace.exists()){
-							echo "Existe projeto"
-						} else {
-							echo "N Existe projeto"
+						openshift.withProject(env.PROJECT_NAME){
+							def pingPongDC = openshift.selector('dc/pingpong')
+							if(pingPongDC.exists()){
+								echo "Existe projeto"
+							} else {
+								echo "N Existe projeto"
+							}
 						}
 					}
 				}
