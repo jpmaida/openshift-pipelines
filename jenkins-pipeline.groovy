@@ -54,10 +54,20 @@ pipeline {
 				script {
 					openshift.withCluster(){
 						openshift.withProject(env.PROJECT_NAME){
-							def pingPongDC = openshift.selector('dc/pingpong')
+							def pingPongDC = openshift.selector("dc/${env.APP_NAME}")
 							if(pingPongDC.exists()){
-								echo "Existe projeto"
+								echo "Aplicação já existe."
+								openshift.apply('-f ocp/configmap.yaml')
+								def bc = openshift.selector('bc/ping-pong')
+								bc.startBuild("--from-file=${env.APP_NAME}.jar", "--wait=true").logs('-f')
+								dc.rollout().status()
 							} else {
+								echo "Aplicação ainda não existe."
+								openshift.create('-f ocp/configmap.yaml')
+								openshift.newBuild("--name=${env.APP_NAME} --image-stream=openjdk18-openshift:latest -l app=${env.APP_NAME}", "--binary=true")
+								openshift.selector('bc/ping-pong').startBuild("--from-file=${env.APP_NAME}.jar", "--wait=true").logs('-f')
+								openshift.newApp("--name=${env.APP_NAME} --image-stream=${env.APP_NAME}:latest")
+								openshift.set("env dc/${appName} MATCH_TIME_IN_MINUTES=10")
 								echo "N Existe projeto"
 							}
 						}
