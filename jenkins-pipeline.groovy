@@ -63,6 +63,8 @@ pipeline {
 								dc.rollout().status()
 							} else {
 								echo "Aplicação ainda não existe."
+								sh "pwd"
+								sh "ls"
 								openshift.create('-f hello-world-spring-boot/ocp/configmap.yaml')
 								openshift.raw("import-image redhat-openjdk-18/openjdk18-openshift --from=registry.redhat.io/redhat-openjdk-18/openjdk18-openshift --confirm")
 								openshift.newBuild("--name=${env.APP_NAME} --image-stream=openjdk18-openshift:latest -l app=${env.APP_NAME}", "--binary=true")
