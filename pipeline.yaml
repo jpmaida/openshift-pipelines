@@ -1,0 +1,22 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: build-and-deploy
+spec:
+  workspaces:
+  - name: shared-workspace
+  params:
+  - name: person-name
+    type: string
+    default: John Doe
+    description: Some name
+  tasks:
+  - name: build-name
+    taskRef: 
+      name: build
+    params:
+    - name: person-name
+      value: $(params.person-name)
+    workspaces:
+    - name: output
+      workspace: shared-workspace

@@ -1,0 +1,19 @@
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  name: build-and-deploy-run
+spec:
+  pipelineRef:
+    name: build-and-deploy
+  params:
+  - name: person-name
+    value: "Joao Paulo"
+  workspaces:
+  - name: shared-workspace
+    volumeClaimTemplate:
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 500Mi
