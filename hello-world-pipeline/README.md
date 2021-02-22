@@ -1,4 +1,5 @@
-# Comandos utilizados
+# Used commands
+The commands below were used to perform a pipeline based on Tekton technology.
 ```
 oc new-project pipelines-tutorial
 oc create -f build-task.yaml
