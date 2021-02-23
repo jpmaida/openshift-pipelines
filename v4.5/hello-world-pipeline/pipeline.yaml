@@ -11,12 +11,20 @@ spec:
     default: John Doe
     description: Some name
   tasks:
-  - name: build-name
+  - name: build
     taskRef: 
-      name: build
+      name: build-hello-world
     params:
     - name: person-name
       value: $(params.person-name)
     workspaces:
     - name: output
       workspace: shared-workspace
+  - name: deploy
+    taskRef: 
+      name: deploy-hello-world
+    workspaces:
+    - name: output
+      workspace: shared-workspace
+    runAfter:
+    - build

@@ -1,0 +1,17 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: deploy-hello-world
+spec:
+  steps:
+  - args:
+    - |-
+      cat hello-world.txt
+    command:
+    - /bin/bash
+    - -c
+    image: registry.redhat.io/rhel7-atomic:latest
+    name: reading-hello-world
+    workingDir: /workspace/output
+  workspaces:
+  - name: output
