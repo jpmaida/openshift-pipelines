@@ -1,17 +1,16 @@
 apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
-  name: deploy-hello-world
+  name: farewell
 spec:
   steps:
   - args:
     - |-
-      cat hello-world.txt
+      echo Bye bye !!!
     command:
     - /bin/bash
     - -c
     image: registry.redhat.io/rhel7-atomic:latest
-    name: reading-hello-world
-    workingDir: /workspace/output
+    name: farewell
   workspaces:
   - name: output

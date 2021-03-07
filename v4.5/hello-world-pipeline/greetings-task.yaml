@@ -1,7 +1,7 @@
 apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
-  name: build-hello-world
+  name: greetings
 spec:
   params:
   - description: Some name
@@ -36,7 +36,18 @@ spec:
     - /bin/bash
     - -c
     image: registry.redhat.io/rhel7-atomic:latest
-    name: building-hello-world
+    name: creating-hello-world-file
+    workingDir: /workspace/output
+  - args:
+    - |-
+      echo Content of the hello-world.txt file.
+      echo Reading file hello-world.txt from $(pwd)
+      cat hello-world.txt
+    command:
+    - /bin/bash
+    - -c
+    image: registry.redhat.io/rhel7-atomic:latest
+    name: reading-hello-world-file
     workingDir: /workspace/output
   workspaces:
   - name: output
