@@ -1,7 +1,7 @@
 apiVersion: tekton.dev/v1beta1
 kind: Pipeline
 metadata:
-  name: build-and-deploy
+  name: hello-world-pipeline
 spec:
   workspaces:
   - name: shared-workspace
@@ -11,20 +11,20 @@ spec:
     default: John Doe
     description: Some name
   tasks:
-  - name: build
+  - name: greetings
     taskRef: 
-      name: build-hello-world
+      name: greetings
     params:
     - name: person-name
       value: $(params.person-name)
     workspaces:
     - name: output
       workspace: shared-workspace
-  - name: deploy
+  - name: farewell
     taskRef: 
-      name: deploy-hello-world
+      name: farewell
     workspaces:
     - name: output
       workspace: shared-workspace
     runAfter:
-    - build
+    - greetings
