@@ -1,0 +1,14 @@
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  name: hello-world-pipeline-run
+  namespace: pipelines-tutorial
+spec:
+  params:
+  - name: person-name
+    value: Fulana
+  pipelineRef:
+    name: hello-world-pipeline
+  workspaces:
+  - emptyDir: {}
+    name: shared-workspace
