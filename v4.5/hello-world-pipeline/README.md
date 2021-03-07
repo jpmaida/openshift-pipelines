@@ -8,4 +8,5 @@ oc create -f pipeline.yaml -n pipelines-tutorial
 oc create -f pipeline-run.yaml -n pipelines-tutorial
 tkn task list
 tkn pipeline list
+tkn pipelinerun list
 ```
