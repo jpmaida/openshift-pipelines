@@ -1,12 +1,11 @@
 apiVersion: tekton.dev/v1beta1
 kind: PipelineRun
 metadata:
-  name: hello-world-pipeline-run
-  namespace: pipelines-tutorial
+  generateName: hello-world-pipeline-run-
 spec:
   params:
   - name: person-name
-    value: Fulana
+    value: Siclana
   pipelineRef:
     name: hello-world-pipeline
   workspaces:
