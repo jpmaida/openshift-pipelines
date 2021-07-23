@@ -1,0 +1,16 @@
+apiVersion: triggers.tekton.dev/v1alpha1
+kind: TriggerBinding
+metadata:
+  name: gilab-push-trigger-binding
+spec:
+  params:
+    - name: PAYLOAD
+      value: $(body)
+    - name: GIT_CLONE_URL
+      value: $(body.project.git_ssh_url)
+    - name: GIT_BRANCH
+      value: $(body.project.git_branch)
+    - name: JBOSS_EAP7_SERVER_GROUP
+      value: $(body.project.jboss_eap7_server_group)
+    - name: DEPLOYED_ARTIFACT_PATH
+      value: $(body.project.deployed_artifact_path)

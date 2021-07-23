@@ -1,0 +1,10 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: ls-task
+spec:
+  workspaces:
+    - name: workspace
+  steps:
+    - image: registry.redhat.io/ubi7/ubi-minimal
+      script: "ls -la workspace"
