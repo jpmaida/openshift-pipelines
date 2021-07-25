@@ -15,7 +15,11 @@ oc new-project <namespace_name_here>
 ```
 
 ### Criação do pipeline
-Criação do arquivo pipeline.yaml. Os tópicos a seguir descreverão aspectos deste arquivo.
+A criação do pipeline consiste na criação do arquivo `pipeline.yaml` e consequentemente seu provisionamento no Openshift. Para provisionar o pipeline a partir do arquivo `pipeline.yaml`, execute:
+```
+oc create -f pipeline.yaml
+```
+Os tópicos a seguir descreverão aspectos deste arquivo.
 
 #### Parâmetros
 Abaixo segue relação de parâmetros usados no pipeline e suas tasks:
