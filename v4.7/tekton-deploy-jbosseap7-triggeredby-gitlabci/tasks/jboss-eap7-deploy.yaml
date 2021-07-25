@@ -1,0 +1,41 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: jboss-eap7-deploy
+spec:
+  params:
+    - name: SERVER_GROUP
+      description: Server Group usado para deploy no JBoss EAP 7.
+    - name: DEPLOYED_ARTIFACT_PATH
+      description: Caminho do artefato que vai ser implantado.
+    - name: CONNECTION_DATA_SECRET_NAME
+      description: Nome da secret que contém os dados de conexão com o JBoss EAP 7.
+  workspaces:
+    - name: workspace
+  steps:
+    - name: download-jbosscli
+      image: registry.redhat.io/ubi7/ubi-minimal
+      script: 'curl -o jboss-cli.jar <url_to_download_jboss-cli-client.jar>'
+    - name: verify-jbosscli
+      image: registry.redhat.io/ubi7/ubi-minimal
+      script: 'ls -la'
+    - name: deploy
+      image: registry.redhat.io/redhat-openjdk-18/openjdk18-openshift:1.8-30
+      script: "java -jar jboss-cli.jar --connect --controller=$JBOSS_EAP7_IP_CONTROLLER --user=$JBOSS_EAP7_MGNT_USER --password=$JBOSS_EAP7_MGNT_PASSWORD --command='deploy workspace/$(inputs.params.DEPLOYED_ARTIFACT_PATH) --server-groups=$(inputs.params.SERVER_GROUP)'"
+      env:
+        - name: JBOSS_EAP7_IP_CONTROLLER
+          valueFrom:
+            secretKeyRef:
+              name: $(params.CONNECTION_DATA_SECRET_NAME)
+              key: CONTROLLER_IP
+        - name: JBOSS_EAP7_MGNT_USER
+          valueFrom:
+            secretKeyRef:
+              name: $(params.CONNECTION_DATA_SECRET_NAME)
+              key: MGNT_USER
+        - name: JBOSS_EAP7_MGNT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: $(params.CONNECTION_DATA_SECRET_NAME)
+              key: MGNT_PASSWORD
+        

@@ -1,0 +1,53 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: greetings
+spec:
+  params:
+  - description: Some name
+    name: person-name
+    type: string
+  steps:
+  - args:
+    - |-
+      echo Welcome to the hello world pipeline !!!
+      echo ---------------------------------------
+    command:
+    - /bin/bash
+    - -c
+    image: registry.redhat.io/rhel7-atomic:latest
+    name: greeting
+  - args:
+    - |-
+      echo My name is $(inputs.params.person-name)
+      echo ---------------------------------------
+    command:
+    - /bin/bash
+    - -c
+    image: registry.redhat.io/rhel7-atomic:latest
+    name: echo-hello-world
+  - args:
+    - |-
+      pwd
+      touch hello-world.txt
+      ls -la
+      echo My name is $(inputs.params.person-name) > hello-world.txt
+    command:
+    - /bin/bash
+    - -c
+    image: registry.redhat.io/rhel7-atomic:latest
+    name: creating-hello-world-file
+    workingDir: /workspace/output
+  - args:
+    - |-
+      echo Content of the hello-world.txt file.
+      echo Reading file hello-world.txt from $(pwd)
+      cat hello-world.txt
+    command:
+    - /bin/bash
+    - -c
+    image: registry.redhat.io/rhel7-atomic:latest
+    name: reading-hello-world-file
+    workingDir: /workspace/output
+  workspaces:
+  - name: output

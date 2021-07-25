@@ -1,0 +1,39 @@
+apiVersion: triggers.tekton.dev/v1alpha1
+kind: TriggerTemplate
+metadata:
+  name: gilab-push-trigger-template
+  annotations:
+    triggers.tekton.dev/old-escape-quotes: "true"
+spec:
+  params:
+    - name: PAYLOAD
+    - name: GIT_CLONE_URL
+    - name: GIT_BRANCH
+    - name: JBOSS_EAP7_SERVER_GROUP
+    - name: DEPLOYED_ARTIFACT_PATH
+  resourcetemplates:
+    - apiVersion: tekton.dev/v1beta1
+      kind: PipelineRun
+      metadata:
+        generateName: pipeline-jbosseap-run-
+      spec:
+        params:
+          - name: PAYLOAD
+            value: $(tt.params.PAYLOAD)
+          - name: GIT_CLONE_URL
+            value: $(tt.params.GIT_CLONE_URL)
+          - name: GIT_BRANCH
+            value: $(tt.params.GIT_BRANCH)
+          - name: JBOSS_EAP7_SERVER_GROUP
+            value: $(tt.params.JBOSS_EAP7_SERVER_GROUP)
+          - name: DEPLOYED_ARTIFACT_PATH
+            value: $(tt.params.DEPLOYED_ARTIFACT_PATH)
+        pipelineRef:
+          name: pipeline-jbosseap
+        workspaces:
+          - name: shared-workspace
+            persistentVolumeClaim:
+              claimName: shared-workspace
+          - configMap:
+              name: maven-settings
+            name: maven-settings

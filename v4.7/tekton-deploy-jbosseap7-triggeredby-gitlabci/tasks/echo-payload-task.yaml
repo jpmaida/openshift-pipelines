@@ -1,0 +1,10 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: echo-payload-task
+spec:
+  params:
+    - name: PAYLOAD
+  steps:
+    - image: registry.redhat.io/ubi7/ubi-minimal
+      script: "echo PAYLOAD sent from GitLab $(params.PAYLOAD)"

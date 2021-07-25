@@ -1,0 +1,12 @@
+{ 
+    "object_kind": "push", 
+    "event_name": "push", 
+    "ref": "refs/heads/beta", 
+    "project": 
+    {
+        "deployed_artifact_path" : "<path_to_ear|war|jar>",
+        "jboss_eap7_server_group": "<jboss_eap_server_group>",
+        "git_branch": "master",
+        "git_ssh_url" : "<application_ssh_url>"
+    }
+}

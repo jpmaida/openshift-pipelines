@@ -1,0 +1,16 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: farewell
+spec:
+  steps:
+  - args:
+    - |-
+      echo Bye bye !!!
+    command:
+    - /bin/bash
+    - -c
+    image: registry.redhat.io/rhel7-atomic:latest
+    name: farewell
+  workspaces:
+  - name: output

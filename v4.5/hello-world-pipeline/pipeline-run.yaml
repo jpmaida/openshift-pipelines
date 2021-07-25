@@ -1,0 +1,13 @@
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  generateName: hello-world-pipeline-run-
+spec:
+  params:
+  - name: person-name
+    value: Siclana
+  pipelineRef:
+    name: hello-world-pipeline
+  workspaces:
+  - emptyDir: {}
+    name: shared-workspace

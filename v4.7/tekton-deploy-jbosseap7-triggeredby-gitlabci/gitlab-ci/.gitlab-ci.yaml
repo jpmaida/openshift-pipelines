@@ -1,0 +1,13 @@
+image: jlrigau/maven-git
+
+start_pipeline:
+  script: 
+    - echo "Clonando repositório git" && git -c http.sslVerify=false clone https://<user>:<password>@<url_repo>
+    - echo "Iniciando invocação de pipeline"
+    - curl -k --header "Content-Type:application/json" --header 'X-Gitlab-Event:Push Hook' --header "X-Gitlab-Token:123456" -H "User-Agent:GitLab/13.6.1-ee" -d "@<path_to_json_payload>" -X POST "<event_listener_route>"
+    - echo "Invocação de pipeline finalizada"
+  tags:
+    - <tag1_to_match_gitlabrunner_on_openshift>
+    - <tag2_to_match_gitlabrunner_on_openshift>
+    - <tag3_to_match_gitlabrunner_on_openshift>
+  when: manual
