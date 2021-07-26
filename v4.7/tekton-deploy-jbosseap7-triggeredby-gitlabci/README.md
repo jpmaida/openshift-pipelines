@@ -23,70 +23,70 @@ The following topics will describe aspects about this file.
 
 #### Parameters
 Below a list of parameters used in the pipeline and its tasks:
-* PAYLOAD: Representa o payload como um todo em sua forma JSON, enviado pela Trigger Template.
-* GIT_CLONE_URL: URL do repositório git que deverá ser clonado pela cluster-task git-clone. Este dado está contido no payload.
-* GIT_BRANCH: Branch do repositório git que deverá ser clonado pela cluster-task git-clone. Este dado está contido no payload.
-* JBOSS_EAP7_SERVER_GROUP: Server group do servidor JBoss EAP 7 onde a aplicação será implantada. Este dado está contido no payload.
-* DEPLOYED_ARTIFACT_PATH: Caminho do artefato (ear, war ou jar) compilado que será implantado no ambiente JBoss EAP 7. Este dado está contido no payload.
+* PAYLOAD: Represents the payload as a whole in its JSON form. It is sent by the Trigger Template.
+* GIT_CLONE_URL: Git repository URL that shall be cloned by the git-clone cluster-task. This data is inside the payload.
+* GIT_BRANCH: Git repository branch that shall be cloned by the git-clone cluster-task. This data is inside the payload.
+* JBOSS_EAP7_SERVER_GROUP: JBoss EAP 7 server group where the application will be deployed. This data is inside the payload.
+* DEPLOYED_ARTIFACT_PATH: Artefact path which will be deployed in JBoss EAP 7 environment. This data is inside the payload.
 
 #### Workspaces
-Workspaces representam áreas comuns onde informações são trocadas entre tasks e cluster-tasks ou arquivos que podem ser montados dentro dos containers das tasks. Abaixo, segue relação de workspaces usados:
+Workspaces represent common areas where information can be exchanged among tasks and cluster-tasks or files that might be mounted inside task's containers. Below the list of used workspaces:
 * shared-workspace
-  * Tipo: Persistent Volume Claim (PVC)
+  * Kind: Persistent Volume Claim (PVC)
   * Claim Name: shared-workspace
 * maven-settings
-  * Tipo: Config Map
+  * Kind: Config Map
   * Nome do Config Map: maven-settings
 
-### Criação das tasks
+### Task creation
 
 #### Task echo-payload
-* Definição: Imprime no terminal o payload recebido pelo Trigger Template criado.
-* Tipo: Task
-  * Arquivo: tasks/echo-payload-task.yaml
-* Parâmetros:
-  * PAYLOAD: Payload enviado pelo Trigger Template. O payload contém dados necessários para que a esteira consiga realizar suas atividades.
+* Definition: Prints on terminal the payload received bu the Trigger Template.
+* Kind: Task
+  * File: tasks/echo-payload-task.yaml
+* Parameter:
+  * PAYLOAD: Payload sent by the Trigger Template. Payload contains necessary data in order to the pipeline is able to accomplish its activities.
 
 #### Task git-clone
-* Definição: Realiza o git clone de um repositório passado por parâmetro.
-* Tipo: Cluster Task
-* Parâmetros:
-  * url: URL do repositório a ser clonado.
-  * sslVerify: Flag que habilita ou desabilita a verificação por SSL.
-  * deleteExisting: Flag para determinar se qualquer dado temporário deve ser apagado ou não antes do 'git clone'.
-  * verbose: Flag que determina se a operação será verbosa ou não.
-  * revision: Branch a ser clonada.
-  * gitInitImage: Imagem base para o container que representa a task. Este campo já vem preenchido com uma imagem padrão.
+* Definition: Execute the git clone of a repository passed by parameter.
+* Kind: Cluster Task
+* Parameter:
+  * url: Repository URL to be cloned.
+  * sslVerify: Flag that enables or disable the SSL verification.
+  * deleteExisting: Flag to determine if any temporary data should be deleted or not before the 'git clone'.
+  * verbose: Flag which sets is the operation will be verbose or not.
+  * revision: Branch to be cloned.
+  * gitInitImage: Base image to container which represents the task. This field comes already fulfilled with a standard base image.
 * Workspaces:
   * shared-workspace
-* Procedimentos adicionais:
-  * É necessária a criação de uma secret para o git clone via SSH do código da aplicação.
+* Additional procedures:
+    * It's necessary the creation of a secret to git clone via SSH the application source code.
     ```
     oc create secret generic gitlab-ssh-key --from-file=ssh-privatekey=<path_to_your_private_key> --type="kubernetes.io/ssh-auth"
     ```
-  * É necessário anotar a secret.
+  * It's necessary to annotate the secret.
     ``` 
     oc annotate secret gitlab-ssh-key tekton.dev/git-0='<url_to_gitlab_without_https>:<custom_port_if_exists>'
     ```
-  * Para que o código possa ser baixado é necesário associar a secret criado com a services account usadas pelo pipeline.
+  * In order to the code can be downloaded it's necessary to associate the created secret with the service account used by the pipeline.
     ```
     oc secrets link pipeline gitlab-ssh-key
     ```
 
 #### Task verify-cloned-repo
-* Definição: Lista arquivos do workspace relacionado à task.
-* Tipo: Task
-  * Arquivo: tasks/ls-task.yaml
+* Definition: Lists workspace's files related to the task.
+* Kind: Task
+  * File: tasks/ls-task.yaml
 * Workspaces:
   * shared-workspace
 
 #### Task maven-build
-* Definição: Realiza um maven build (install, package, etc.) na forma mais geral possível.
-* Tipo: Cluster Task
-* Parâmetros:
-  * MAVEN_IMAGE: Imagem base para o container que representa a task. Este campo já vem preenchido com uma imagem padrão.
-  * GOALS: Parâmetro do tipo array que contém os goals (clean, package, install, etc.) a serem usados.
-  * CONTEXT_DIR: Diretório base para busca de arquivo pom.xml e submódulos maven.
+* Definition: Performs a maven build (install, package, etc.) in the most general way possible.
+* Kind: Cluster Task
+* Parameter:
+  * MAVEN_IMAGE: Base image to the container which represents the task. This field comes already fulfilled with a standard base image.
+  * GOALS: Array type parameter which contains the goals to be used.
+  * CONTEXT_DIR: Base directory for the pom.xml file and maven submodules search.
 * Workspaces:
   * shared-workspace
   * maven-settings
