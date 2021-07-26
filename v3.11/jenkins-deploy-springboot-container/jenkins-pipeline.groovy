@@ -41,7 +41,7 @@ pipeline {
 			steps {
 				script {
 					try{
-						def sonarqubeUrl = "https://sonarqube-cicd.apps.na311.openshift.opentlc.com "
+						def sonarqubeUrl = "<route_to_sonarqube>"
 						sh "mvn sonar:sonar -Dsonar.host.url=${sonarqubeUrl} -DskipTests=true -Dsonar.scm.provider=git -f ${env.POM_FILE_PATH}"
 					} catch(Exception e) {
 						echo "Erro ao chamar o Sonar. - " + e.getMessage()
