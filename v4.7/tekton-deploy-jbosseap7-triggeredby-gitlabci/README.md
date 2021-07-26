@@ -1,28 +1,28 @@
-# Pipeline Tekton + GitlabCI de deploy em ambiente JBoss EAP 7
+# Pipeline CI/CD Tekton + GitlabCI to deploy in JBoss EAP 7 environment
 
 ## Arquitetura
 ![Architectural and processual vision](imgs/arquitetura.jpg)
 
 ### Observação
-Todos os dados relacionados ao payload usado no desenvolvimento desta esteira estão dentro do diretório `gitlab-ci`.
+You can find all the data related to the development of this pipeline inside the `gitlab-ci` directory.
 
-## Etapas de criação do pipeline
+## Steps to pipeline creation
 
-### Criação de namespace
+### Namespace creation
 ```
 oc login --server=<openshift_cluster_url_login>
 oc new-project <namespace_name_here>
 ```
 
-### Criação do pipeline
-A criação do pipeline consiste na criação do arquivo `pipeline.yaml` e consequentemente seu provisionamento no Openshift. Para provisionar o pipeline a partir do arquivo `pipeline.yaml`, execute:
+### Pipeline creation
+Pipeline creation consists of creating the `pipeline.yaml` file and therefore its provisioning in Openshift. In order to start the provisioning, execute:
 ```
 oc create -f pipeline.yaml
 ```
-Os tópicos a seguir descreverão aspectos deste arquivo.
+The following topics will describe aspects about this file.
 
-#### Parâmetros
-Abaixo segue relação de parâmetros usados no pipeline e suas tasks:
+#### Parameters
+Below a list of parameters used in the pipeline and its tasks:
 * PAYLOAD: Representa o payload como um todo em sua forma JSON, enviado pela Trigger Template.
 * GIT_CLONE_URL: URL do repositório git que deverá ser clonado pela cluster-task git-clone. Este dado está contido no payload.
 * GIT_BRANCH: Branch do repositório git que deverá ser clonado pela cluster-task git-clone. Este dado está contido no payload.
