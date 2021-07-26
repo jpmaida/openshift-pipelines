@@ -92,17 +92,17 @@ Workspaces represent common areas where information can be exchanged among tasks
   * maven-settings
 
 #### Task deploy
-* Definição: Realize o deploy de um artefato ear, war ou jar no ambiente JBoss EAP 7.
-* Tipo: Task
-  * Arquivo: tasks/jboss-eap7-deploy.yaml
-* Parâmetros:
-  * SERVER_GROUP: Representa o server group no qual o artefato será deployado.
-  * DEPLOYED_ARTIFACT_PATH: Caminho do artefato que será deployado. Este caminho leva em conta o diretório base de build como início.
-  * CONNECTION_DATA_SECRET_NAME: Nome da secret que contém os dados de conexão com o ambiente EAP 7.
+* Definition: Executes the deploy of an ear, war or jar artifact into JBoss EAP 7 environment.
+* Kind: Task
+  * File: tasks/jboss-eap7-deploy.yaml
+* Parameter:
+  * SERVER_GROUP: Represents the server group in which the artifact will be deployed.
+  * DEPLOYED_ARTIFACT_PATH: Artifact's path that will be deployed. This path takes into account the build's base directory as beginning.
+  * CONNECTION_DATA_SECRET_NAME: Secret name which contains connection data to the JBoss EAP 7 environment.
 * Workspaces:
   * shared-workspace
 
-#### Secret com dados para conexão no EAP 7
+#### Secret with connection data to JBoss EAP 7
 ```
 oc create secret generic jboss-eap7-connection-data --from-literal=CONTROLLER_IP="<controller_ip>" --from-literal=MGNT_USER=<management_user> --from-literal=MGNT_PASSWORD=<management_password>
 ```
