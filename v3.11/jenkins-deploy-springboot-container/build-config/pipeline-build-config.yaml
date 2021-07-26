@@ -6,7 +6,6 @@ metadata:
   labels:
     name: pipeline
   name: pipeline
-  namespace: cicd
 spec:
   failedBuildsHistoryLimit: 5
   nodeSelector: {}
@@ -16,7 +15,7 @@ spec:
   runPolicy: Serial
   source:
     git:
-      ref: v3.11
+      ref: main
       uri: 'https://github.com/jpmaida/openshift-pipelines.git'
     type: Git
   strategy:
@@ -34,7 +33,7 @@ spec:
           value: "olympic-games"
         - name: APP_NAME
           value: "ping-pong"
-      jenkinsfilePath: jenkins-pipeline.groovy
+      jenkinsfilePath: v3.11/jenkins-deploy-springboot-container/jenkins-pipeline.groovy
     type: JenkinsPipeline
   successfulBuildsHistoryLimit: 5
   triggers: []
