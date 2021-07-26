@@ -38,13 +38,21 @@ You just have to create the PipelineRun again. You may wonder "Shouldn't this op
 ### To see all the tasks
 ```
 tkn task list
+```
+
+### To see all the pipelines
+```
 tkn pipeline list
+```
+
+### To see all the pipeline runs
+```
 tkn pipelinerun list
 ```
 
-Need to see some logs ?
+### Need to see some logs ?
 ```
-tkn pipelinerun logs <pipeline-run-name> -n pipelines-tutorial
+tkn pipelinerun logs <pipeline-run-name> -f -n <namespace>
 ```
 
 
