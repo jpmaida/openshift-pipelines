@@ -1,7 +1,7 @@
 # Pipeline Tekton + GitlabCI de deploy em ambiente JBoss EAP 7
 
 ## Arquitetura
-![Visão arquitetural e processual](imgs/arquitetura.jpg)
+![Architectural and processual vision](imgs/arquitetura.jpg)
 
 ### Observação
 Todos os dados relacionados ao payload usado no desenvolvimento desta esteira estão dentro do diretório `gitlab-ci`.
